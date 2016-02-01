@@ -177,8 +177,8 @@ int main(int argc, char *argv[])
     Mat src, cosrc,spin;
     Mat dst, cdst;
     Mat TransMatrix = (Mat_<double>(3,3) << 0.5 * sqrt(3),-0.5 * sqrt(3),0,0.5,0.5,0,0,0,1);
-    src=imread("/home/cyw/MultiView/MultiView1/src.jpg",0);
-    cosrc = imread("/home/cyw/MultiView/MultiView1/src.jpg",1);
+    src=imread("./src.jpg",0);
+    cosrc = imread("./src.jpg",1);
     imshow("original", cosrc);
     spin = MatrixTransform(cosrc,TransMatrix);
     cvtColor(src, src, CV_GRAY2BGR);
