@@ -99,9 +99,16 @@ Mat MultipleByMatrix(Mat TransMatrix,Mat IVector)
 
 Mat MatrixTransform(Mat InputImg,Mat TransMatrix)
 {
-    Mat OutputImg(InputImg.rows,InputImg.cols,CV_8UC1);
+    Mat OutputImg = Mat::zeros(InputImg.size(), InputImg.type());
     double nl = InputImg.rows;
     double nc = InputImg.cols;
+    int channel = InputImg.channels();
+    cout << OutputImg.rows << endl;
+    cout << InputImg.rows << endl;
+    cout << OutputImg.cols << endl;
+    cout << InputImg.cols << endl;
+    cout << OutputImg.channels() << endl;
+    cout << InputImg.channels() << endl;
     for(int j = 0;j < nl;j++)
     {
         uchar *p = InputImg.ptr<uchar>(j);
@@ -115,8 +122,23 @@ Mat MatrixTransform(Mat InputImg,Mat TransMatrix)
                 int jj = (int)Opos.at<double>(1,0);
                 if(OutputImg.at<uchar>(ii,jj) == 0 )
                 {
-                    OutputImg.at<uchar>(ii,jj) = p[i];
+                    switch(channel)
+                    {
+                    case 1:
+                    {
+                        OutputImg.at<uchar>(ii,jj) = p[i];
+                        break;
+                    }
+                    case 3:
+                    {
+                        for(int Cnum = 0;Cnum < channel;Cnum ++)
+                        {
+                            OutputImg.at<Vec3b>(ii,jj)[Cnum] = p[channel * i + Cnum];
 //                    cout << p[i]  << endl;
+                        }
+                        break;
+                    }
+                    }
                 }
                 else
                 {
@@ -152,12 +174,18 @@ int main(int argc, char *argv[])
 //    VideoCapture cap(0);
 //    if(!cap.isOpened()) return -1;
 
-    Mat src, cosrc;
+    Mat src, cosrc,spin;
     Mat dst, cdst;
+    Mat TransMatrix = (Mat_<double>(3,3) << 0.5 * sqrt(3),-0.5 * sqrt(3),0,0.5,0.5,0,0,0,1);
     src=imread("/home/cyw/MultiView/MultiView1/src.jpg",0);
     cosrc = imread("/home/cyw/MultiView/MultiView1/src.jpg",1);
+    imshow("original", cosrc);
+    spin = MatrixTransform(cosrc,TransMatrix);
     cvtColor(src, src, CV_GRAY2BGR);
+//    cout << cosrc.type() << endl;
     threshold(src,src,200,255,THRESH_BINARY);
+
+    imshow("spin",spin);
 //    Mat aa = (Mat_<int>(3,1)<<1,2,3);
 //    Mat bb = (Mat_<int>(3,1)<<1,1,1);
 //    cout << crossProduct(aa,bb) <<endl;
@@ -211,7 +239,7 @@ int main(int argc, char *argv[])
         imshow("source", src);
         imshow("detected lines", cdst);
 //        if(waitKey(30) >= 0) break;
-    }
+    }    
 //    cvtColor(frame, edges, CV_BGR2GRAY);
 //    GaussianBlur(edges, edges, Size(7,7), 1.5, 1.5);
 //    Canny(edges, edges, 0, 30, 3);
