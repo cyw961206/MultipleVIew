@@ -1,4 +1,4 @@
-#include <QCoreApplication>
+v#include <QCoreApplication>
 #include<opencv/cv.h>
 #include<opencv/highgui.h>
 #include<complex>
@@ -120,7 +120,7 @@ Mat MatrixTransform(Mat InputImg,Mat TransMatrix)
             {
                 int ii = (int)Opos.at<double>(0,0);
                 int jj = (int)Opos.at<double>(1,0);
-                if(OutputImg.at<uchar>(ii,jj) == 0 )
+//                if(OutputImg.at<uchar>(ii,jj) == 0 )
                 {
                     switch(channel)
                     {
