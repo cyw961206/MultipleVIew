@@ -1,4 +1,4 @@
-#include <QCoreApplication>
+v#include <QCoreApplication>
 #include<opencv/cv.h>
 #include<opencv/highgui.h>
 #include<complex>
@@ -120,7 +120,7 @@ Mat MatrixTransform(Mat InputImg,Mat TransMatrix)
             {
                 int ii = (int)Opos.at<double>(0,0);
                 int jj = (int)Opos.at<double>(1,0);
-                if(OutputImg.at<uchar>(ii,jj) == 0 )
+//                if(OutputImg.at<uchar>(ii,jj) == 0 )
                 {
                     switch(channel)
                     {
@@ -177,8 +177,8 @@ int main(int argc, char *argv[])
     Mat src, cosrc,spin;
     Mat dst, cdst;
     Mat TransMatrix = (Mat_<double>(3,3) << 0.5 * sqrt(3),-0.5 * sqrt(3),0,0.5,0.5,0,0,0,1);
-    src=imread("/home/cyw/MultiView/MultiView1/src.jpg",0);
-    cosrc = imread("/home/cyw/MultiView/MultiView1/src.jpg",1);
+    src=imread("./src.jpg",0);
+    cosrc = imread("./src.jpg",1);
     imshow("original", cosrc);
     spin = MatrixTransform(cosrc,TransMatrix);
     cvtColor(src, src, CV_GRAY2BGR);
